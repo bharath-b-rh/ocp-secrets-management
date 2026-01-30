@@ -42,19 +42,25 @@ const ClusterIssuerModel = {
 
 const ExternalSecretModel = {
   group: 'external-secrets.io',
-  version: 'v1beta1',
+  version: 'v1',
   kind: 'ExternalSecret',
+};
+
+const ClusterExternalSecretModel = {
+  group: 'external-secrets.io',
+  version: 'v1',
+  kind: 'ClusterExternalSecret',
 };
 
 const SecretStoreModel = {
   group: 'external-secrets.io',
-  version: 'v1beta1',
+  version: 'v1',
   kind: 'SecretStore',
 };
 
 const ClusterSecretStoreModel = {
   group: 'external-secrets.io',
-  version: 'v1beta1',
+  version: 'v1',
   kind: 'ClusterSecretStore',
 };
 
@@ -74,6 +80,12 @@ const PushSecretModel = {
   group: 'external-secrets.io',
   version: 'v1alpha1',
   kind: 'PushSecret',
+};
+
+const ClusterPushSecretModel = {
+  group: 'external-secrets.io',
+  version: 'v1alpha1',
+  kind: 'ClusterPushSecret',
 };
 
 interface SecretProviderClassPodStatus {
@@ -135,12 +147,16 @@ export const ResourceInspect: React.FC = () => {
         return ClusterIssuerModel;
       case 'externalsecrets':
         return ExternalSecretModel;
+      case 'clusterexternalsecrets':
+        return ClusterExternalSecretModel;
       case 'secretstores':
         return SecretStoreModel;
       case 'clustersecretstores':
         return ClusterSecretStoreModel;
       case 'pushsecrets':
         return PushSecretModel;
+      case 'clusterpushsecrets':
+        return ClusterPushSecretModel;
       case 'secretproviderclasses':
         return SecretProviderClassModel;
       default:
@@ -149,7 +165,7 @@ export const ResourceInspect: React.FC = () => {
   };
 
   const model = getResourceModel();
-  const isClusterScoped = resourceType === 'clusterissuers' || resourceType === 'clustersecretstores';
+  const isClusterScoped = resourceType === 'clusterissuers' || resourceType === 'clustersecretstores' || resourceType === 'clusterexternalsecrets' || resourceType === 'clusterpushsecrets';
 
   const [resource, loaded, loadError] = useK8sWatchResource<any>({
     groupVersionKind: model,
@@ -454,10 +470,16 @@ export const ResourceInspect: React.FC = () => {
         return t('ClusterIssuer');
       case 'externalsecrets':
         return t('ExternalSecret');
+      case 'clusterexternalsecrets':
+        return t('ClusterExternalSecret');
       case 'secretstores':
         return t('SecretStore');
       case 'clustersecretstores':
         return t('ClusterSecretStore');
+      case 'pushsecrets':
+        return t('PushSecret');
+      case 'clusterpushsecrets':
+        return t('ClusterPushSecret');
       default:
         return t('Resource');
     }

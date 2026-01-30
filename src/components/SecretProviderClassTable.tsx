@@ -214,13 +214,13 @@ export const SecretProviderClassTable: React.FC<SecretProviderClassTableProps> =
       const conditionStatus = getSecretProviderClassStatus(spc, podStatuses);
       
       // Get secret objects count
-      const secretObjectsCount = spc.spec.secretObjects?.length || 0;
+      const secretObjectsCount = spc.spec?.secretObjects?.length || 0;
       const secretObjectsText = secretObjectsCount > 0 
         ? `${secretObjectsCount} secret${secretObjectsCount > 1 ? 's' : ''}`
         : 'None';
 
       // Get key parameters for display
-      const parameters = spc.spec.parameters || {};
+      const parameters = spc.spec?.parameters || {};
       const parameterKeys = Object.keys(parameters);
       const parametersText = parameterKeys.length > 0 
         ? `${parameterKeys.length} parameter${parameterKeys.length > 1 ? 's' : ''}`
@@ -232,7 +232,7 @@ export const SecretProviderClassTable: React.FC<SecretProviderClassTableProps> =
           spc.metadata.namespace,
           (
             <span>
-              {getProviderIcon(spc.spec.provider)} {spc.spec.provider}
+              {getProviderIcon(spc.spec?.provider || '')} {spc.spec?.provider || 'Unknown'}
             </span>
           ),
           secretObjectsText,
@@ -310,9 +310,7 @@ export const SecretProviderClassTable: React.FC<SecretProviderClassTableProps> =
           )}
           <div style={{ marginBottom: '1.5rem' }}>
             <p style={{ marginBottom: '1rem', fontSize: '1rem', lineHeight: '1.5' }}>
-              {t('Are you sure you want to delete the SecretProviderClass "{name}"?', {
-                name: deleteModal.secretProviderClass?.metadata.name,
-              })}
+              {`Are you sure you want to delete the ${t('SecretProviderClass')} "${deleteModal.secretProviderClass?.metadata?.name || ''}"?`}
             </p>
             <p style={{ margin: 0, fontSize: '0.875rem', color: '#6a737d' }}>
               <strong>{t('This action cannot be undone.')}</strong>
